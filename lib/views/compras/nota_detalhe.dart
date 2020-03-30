@@ -18,7 +18,7 @@ class NotaDetalhe extends StatefulWidget {
 }
 
 class _NotaDetalhe extends State<NotaDetalhe> {
-  var newTaskCtrl = TextEditingController();
+  var cValorRateio = TextEditingController();
   static String id;
 
   _NotaDetalhe(id) {
@@ -29,65 +29,83 @@ class _NotaDetalhe extends State<NotaDetalhe> {
   Future load(id) async {
     http.Response response;
     try {
-      print(id);
-
       response = await http
           .get('http://localhost:5000/compras/get_nota_itens?id=' + id);
       Iterable decoded = jsonDecode(response.body);
-      print(decoded);
       setState(() {
         widget.itens = decoded.map((x) => NotaItem.fromJson(x)).toList();
-        print(widget.itens[0].dsdetalhe);
       });
     } catch (ex) {
       print(ex.toString());
     }
   }
 
+  void tap_item(NotaItem item) {
+    Navigator.pushNamed(context, '/views/compras/nota_item_detalhe',
+        arguments: item);
+  }
+
+  void calcularRateio() {
+    if (cValorRateio.text.trim() != "") {
+      double rateio = double.parse(cValorRateio.text);
+      double totalNota = widget.itens
+          .map((x) =>
+              (x.vlsubst + x.vlipi + x.vlunitario + x.vlfreterateado) *
+              x.qtitem)
+          .fold(0, (p, c) => p + c);
+
+      double pctRateio = rateio / totalNota;
+      print(rateio);
+      print(pctRateio);
+      print(totalNota);
+      print("----");
+      for (var x in widget.itens) {
+        x.vlrateio = pctRateio * x.vlcusto;
+        print(x.vlrateio);
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: Text("Detalhes")),
+        appBar: AppBar(
+          title: TextFormField(
+            controller: cValorRateio,
+            onEditingComplete: calcularRateio,
+            keyboardType: TextInputType.number,
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 24,
+            ),
+            decoration: InputDecoration(
+                labelText: "Valor para Ratear",
+                labelStyle: TextStyle(
+                  color: Colors.white,
+                )),
+          ),
+        ),
         body: ListView.builder(
           itemCount: widget.itens.length,
           itemBuilder: (BuildContext ctx, int index) {
             final item = widget.itens[index];
             return ListTile(
-              // onTap: () => tap_item(item.iddocumento),
+              onTap: () => tap_item(item),
               title: RichText(
                   text: TextSpan(
                 text: item.dsdetalhe + "\n",
                 style: TextStyle(color: Colors.black, fontSize: 22),
                 children: <TextSpan>[
                   TextSpan(
-                      text: "Emissão: ",
+                      text: "Qtde: " + item.qtitem.toString(),
                       style: TextStyle(color: Colors.black, fontSize: 16)),
-                  // TextSpan(
-                  //     text: item.dtemissao.day.toString().padLeft(2, '0') +
-                  //         "/" +
-                  //         item.dtemissao.month.toString().padLeft(2, '0'),
-                  //     style: TextStyle(
-                  //         color: Colors.black,
-                  //         fontSize: 18,
-                  //         fontWeight: FontWeight.bold)),
-                  // TextSpan(
-                  //     text: "  Valor: ",
-                  //     style: TextStyle(color: Colors.black, fontSize: 16)),
-                  // TextSpan(
-                  //     text: item.vltotal.toStringAsFixed(2),
-                  //     style: TextStyle(
-                  //         color: Colors.black,
-                  //         fontSize: 18,
-                  //         fontWeight: FontWeight.bold)),
+                  TextSpan(
+                      text: " / Valor Nota: " +
+                          item.vlunitario.toStringAsFixed(2),
+                      style: TextStyle(color: Colors.black, fontSize: 16)),
                 ],
               )),
               key: Key(item.iddocumentoitem),
-              // leading: Text(),
-              // onChanged: (value) {
-              //   setState(() {
-              //     item.done = value;
-              //   });
-              // },
             );
           },
         ));

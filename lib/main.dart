@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:engine_mobile/views/compras/nota_detalhe.dart';
+import 'package:engine_mobile/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'models/compras.dart';
@@ -18,11 +18,7 @@ class EngineMobile extends StatelessWidget {
       ),
       // home: Home(),
       initialRoute: '/',
-      routes: <String, WidgetBuilder>{
-        '/': (BuildContext context) => Home(),
-        '/views/compras/nota_detalhe': (BuildContext context) =>
-            NotaDetalhe(_HomeState.idNota)
-      },
+      onGenerateRoute: RouteGenerator.gerenateRoute,
     );
   }
 }
@@ -39,7 +35,6 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   var newTaskCtrl = TextEditingController();
-  static String idNota;
 
   _HomeState() {
     load();
@@ -59,30 +54,21 @@ class _HomeState extends State<Home> {
   }
 
   void tap_item(String id) {
-    _HomeState.idNota = id;
-    Navigator.pushNamed(context, '/views/compras/nota_detalhe');
+    Navigator.pushNamed(context, '/views/compras/nota_detalhe', arguments: id);
   }
 
+//
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: TextFormField(
-          controller: newTaskCtrl,
-          keyboardType: TextInputType.text,
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 24,
-          ),
-          decoration: InputDecoration(
-              labelText: "Título",
-              labelStyle: TextStyle(
-                color: Colors.white,
-              )),
+        title: Text(
+          "Notas de Entrada",
+          style: TextStyle(fontSize: 22),
         ),
-        actions: <Widget>[
-          Icon(Icons.menu),
-        ],
+        // actions: <Widget>[
+        //   Icon(Icons.menu),
+        // ],
       ),
       body: ListView.builder(
         itemCount: widget.fornecedores.length,
@@ -93,7 +79,7 @@ class _HomeState extends State<Home> {
             title: RichText(
                 text: TextSpan(
               text: item.nmpessoa + "\n",
-              style: TextStyle(color: Colors.black, fontSize: 22),
+              style: TextStyle(color: Colors.black, fontSize: 20),
               children: <TextSpan>[
                 TextSpan(
                     text: "Emissão: ",
@@ -126,11 +112,6 @@ class _HomeState extends State<Home> {
             // },
           );
         },
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        child: Icon(Icons.add),
-        backgroundColor: Colors.pink,
       ),
     );
   }

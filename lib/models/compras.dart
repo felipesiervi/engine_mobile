@@ -26,6 +26,12 @@ class NotaItem {
   double vlsubst;
   double vlunitario;
   double vlipi;
+  double allucrodesejada;
+  double vlprecoprazo;
+  double vlprecovista;
+  double vlfreterateado;
+  double vlrateio;
+  double vlcusto;
 
   NotaItem(
       {this.iddocumentoitem,
@@ -34,6 +40,12 @@ class NotaItem {
       this.qtitem,
       this.vlsubst,
       this.vlipi,
+      this.allucrodesejada,
+      this.vlprecoprazo,
+      this.vlprecovista,
+      this.vlfreterateado,
+      this.vlrateio,
+      this.vlcusto,
       this.vlunitario});
 
   NotaItem.fromJson(Map<String, dynamic> json) {
@@ -44,5 +56,11 @@ class NotaItem {
     vlsubst = json['vlsubst'] as double;
     vlunitario = json['vlunitario'] as double;
     vlipi = json['vlipi'] as double;
+    allucrodesejada = json['allucrodesejada'] as double;
+    vlprecoprazo = json['vlprecoprazo'] as double;
+    vlprecovista = json['vlprecovista'] as double;
+    vlfreterateado = json['vlfreterateado'] as double;
+    vlrateio = json['vlrateio'] as double;
+    vlcusto = vlsubst + vlipi + vlunitario;
   }
 }
