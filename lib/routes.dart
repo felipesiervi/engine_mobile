@@ -1,7 +1,8 @@
 import 'package:engine_mobile/views/compras/nota_detalhe.dart';
 import 'package:engine_mobile/views/compras/nota_item_detalhe.dart';
+import 'package:engine_mobile/views/compras/nota_lista.dart';
+import 'package:engine_mobile/views/preferencias/preferencias.dart';
 import 'package:flutter/material.dart';
-import 'package:engine_mobile/main.dart';
 
 class RouteGenerator {
   static Route<dynamic> gerenateRoute(RouteSettings settings) {
@@ -9,11 +10,13 @@ class RouteGenerator {
 
     switch (settings.name) {
       case '/':
-        return MaterialPageRoute(builder: (_) => Home());
+        return MaterialPageRoute(builder: (_) => NotaLista());
       case '/views/compras/nota_detalhe':
         return MaterialPageRoute(builder: (_) => NotaDetalhe(args));
       case '/views/compras/nota_item_detalhe':
         return MaterialPageRoute(builder: (_) => NotaItemDetalhe(args));
+      case '/views/preferencias/preferencias':
+        return MaterialPageRoute(builder: (_) => Preferencias());
       default:
         return _errorRoute();
     }
