@@ -6,12 +6,13 @@ class Fornecedor {
 
   Fornecedor({this.nmpessoa, this.vltotal, this.iddocumento, this.dtemissao});
 
-  Fornecedor.fromJson(Map json)
-      : nmpessoa = json['nmpessoa'],
-        vltotal = json['vltotal'] as double,
-        iddocumento = json['iddocumento'],
-        dtemissao =
-            DateTime.fromMillisecondsSinceEpoch(json['dtemissao'] as int);
+  Fornecedor.fromJson(Map<String, dynamic> json) {
+    nmpessoa = json['nmpessoa'] ?? "";
+    vltotal = json['vltotal'] as double ?? 0;
+    iddocumento = json['iddocumento'] ?? "";
+    dtemissao =
+        DateTime.fromMillisecondsSinceEpoch(json['dtemissao'] as int ?? 0);
+  }
 
   Map toJson() {
     return {'nmpessoa': nmpessoa, 'vltotal': vltotal};

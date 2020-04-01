@@ -15,11 +15,11 @@ class _Preferencias extends State<Preferencias> {
 
   void gravar() {
     var obj = {
-      'IpBancoDados': cIpBancoDados.text,
-      'Usuario': cUsuario.text,
-      'Senha': cSenha.text,
-      'ServidorAPI': cServidorAPI.text,
-      'NomeBanco': cNomeBanco.text,
+      'IpBancoDados': cIpBancoDados.text.trim(),
+      'Usuario': cUsuario.text.trim(),
+      'Senha': cSenha.text.trim(),
+      'ServidorAPI': cServidorAPI.text.trim(),
+      'NomeBanco': cNomeBanco.text.trim(),
     };
 
     atualizaPreferencia('ServidorAPI', cServidorAPI.text);
@@ -29,8 +29,14 @@ class _Preferencias extends State<Preferencias> {
 
   void carregar() {
     cServidorAPI.text = params['ServidorAPI'];
-    // var obj = get('preferencias');
-    // print(obj);
+    get('preferencias', load);
+  }
+
+  void load(decoded) {
+    cIpBancoDados.text = decoded['IpBancoDados'];
+    cUsuario.text = decoded['Usuario'];
+    cSenha.text = decoded['Senha'];
+    cNomeBanco.text = decoded['NomeBanco'];
   }
 
   @override

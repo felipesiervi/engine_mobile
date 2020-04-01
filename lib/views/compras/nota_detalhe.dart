@@ -2,42 +2,39 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import '../../models/compras.dart';
+import '../../util.dart';
 
 // void main() => runApp(EngineMobile());
 
 class NotaDetalhe extends StatefulWidget {
-  List<NotaItem> itens = new List<NotaItem>();
   final String id;
 
-  NotaDetalhe(this.id) {
-    itens = [];
-  }
+  NotaDetalhe(this.id);
 
   @override
   _NotaDetalhe createState() => _NotaDetalhe(this.id);
 }
 
 class _NotaDetalhe extends State<NotaDetalhe> {
+  List<NotaItem> itens = new List<NotaItem>();
   var cValorRateio = TextEditingController();
   static String id;
 
   _NotaDetalhe(id) {
     if (id != null) _NotaDetalhe.id = id;
-    load(_NotaDetalhe.id);
+    call(_NotaDetalhe.id);
   }
 
-  Future load(id) async {
-    http.Response response;
-    try {
-      response = await http
-          .get('http://localhost:5000/compras/get_nota_itens?id=' + id);
-      Iterable decoded = jsonDecode(response.body);
-      setState(() {
-        widget.itens = decoded.map((x) => NotaItem.fromJson(x)).toList();
-      });
-    } catch (ex) {
-      print(ex.toString());
-    }
+  Future call(id) async {
+    await get('compras/get_nota_itens?id=' + id, load);
+  }
+
+  void load(decoded) {
+    List<NotaItem> list = new List<NotaItem>();
+    decoded.forEach((x) => list.add(NotaItem.fromJson(x)));
+    setState(() {
+      itens = list;
+    });
   }
 
   void tap_item(NotaItem item) {
@@ -48,7 +45,7 @@ class _NotaDetalhe extends State<NotaDetalhe> {
   void calcularRateio() {
     if (cValorRateio.text.trim() != "") {
       double rateio = double.parse(cValorRateio.text);
-      double totalNota = widget.itens
+      double totalNota = itens
           .map((x) =>
               (x.vlsubst + x.vlipi + x.vlunitario + x.vlfreterateado) *
               x.qtitem)
@@ -59,7 +56,7 @@ class _NotaDetalhe extends State<NotaDetalhe> {
       print(pctRateio);
       print(totalNota);
       print("----");
-      for (var x in widget.itens) {
+      for (var x in itens) {
         x.vlrateio = pctRateio * x.vlcusto;
         print(x.vlrateio);
       }
@@ -86,9 +83,9 @@ class _NotaDetalhe extends State<NotaDetalhe> {
           ),
         ),
         body: ListView.builder(
-          itemCount: widget.itens.length,
+          itemCount: itens.length,
           itemBuilder: (BuildContext ctx, int index) {
-            final item = widget.itens[index];
+            final item = itens[index];
             return ListTile(
               onTap: () => tap_item(item),
               title: RichText(

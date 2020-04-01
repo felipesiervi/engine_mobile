@@ -4,11 +4,12 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 Map<String, dynamic> params = {};
 
-Future getPreferencias() async {
+Future getPreferencias(func) async {
   var prefs = await SharedPreferences.getInstance();
   Map<String, dynamic> ret = {};
   ret['ServidorAPI'] = prefs.getString('ServidorAPI');
   params = ret;
+  func();
 }
 
 Future atualizaPreferencia(chave, valor) async {
@@ -17,18 +18,16 @@ Future atualizaPreferencia(chave, valor) async {
   await prefs.setString(chave, valor);
 }
 
-Future<Iterable> get(url) async {
+Future get(url, func) async {
   http.Response response;
   try {
     print(params['ServidorAPI']);
     response = await http.get('http://' + params['ServidorAPI'] + '/' + url);
-    Iterable decoded = jsonDecode(response.body);
-    return decoded;
+    var decoded = jsonDecode(response.body);
+    func(decoded);
   } catch (ex) {
     print(ex.toString());
   }
-  print('null');
-  return null;
 }
 
 Future post(url, obj) async {
