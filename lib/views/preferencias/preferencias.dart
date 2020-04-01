@@ -7,6 +7,7 @@ class Preferencias extends StatefulWidget {
 }
 
 class _Preferencias extends State<Preferencias> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   var cIpBancoDados = TextEditingController();
   var cUsuario = TextEditingController();
   var cSenha = TextEditingController();
@@ -24,7 +25,11 @@ class _Preferencias extends State<Preferencias> {
 
     atualizaPreferencia('ServidorAPI', cServidorAPI.text);
 
-    post('preferencias/atualizar', obj);
+    post('preferencias/atualizar', obj, exibeMensagem);
+  }
+
+  void exibeMensagem(txt) {
+    alert(_scaffoldKey, txt['message']);
   }
 
   void carregar() {
@@ -46,6 +51,7 @@ class _Preferencias extends State<Preferencias> {
     });
 
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(title: Text("Preferências")),
       body: ListView(
         children: <Widget>[

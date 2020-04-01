@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -30,7 +31,15 @@ Future get(url, func) async {
   }
 }
 
-Future post(url, obj) async {
+void alert(_scaffoldKey, txt) {
+  final snackBar = SnackBar(
+    content: Text(txt),
+  );
+
+  _scaffoldKey.currentState.showSnackBar(snackBar);
+}
+
+Future post(url, obj, func) async {
   print(params);
   try {
     url = 'http://' + params['ServidorAPI'] + '/' + url;
@@ -40,11 +49,11 @@ Future post(url, obj) async {
       'Accept': 'application/json',
     };
 
-    print(url);
     final response = await http.post(url, body: body, headers: headers);
     final responseJson = json.decode(response.body);
-    print(5);
-    print(responseJson);
+    if (func != null) {
+      func(responseJson);
+    }
   } catch (ex) {
     print(ex.toString());
   }

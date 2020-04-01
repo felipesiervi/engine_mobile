@@ -14,9 +14,11 @@ class NotaItemDetalhe extends StatefulWidget {
 }
 
 class _NotaItemDetalhe extends State<NotaItemDetalhe> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   final NotaItem item;
   var cPrecoAvista = TextEditingController();
   var cPrecoPrazo = TextEditingController();
+  var cMargem = TextEditingController();
   double precoAvista;
   double precoPrazo;
   double adiciona = 0;
@@ -101,6 +103,8 @@ class _NotaItemDetalhe extends State<NotaItemDetalhe> {
           double.parse(decoded['vlprecovista'].toString()).toStringAsFixed(2);
       cPrecoPrazo.text =
           double.parse(decoded['vlprecoprazo'].toString()).toStringAsFixed(2);
+      cMargem.text = double.parse(decoded['allucrodesejada'].toString())
+          .toStringAsFixed(2);
     });
   }
 
@@ -108,15 +112,21 @@ class _NotaItemDetalhe extends State<NotaItemDetalhe> {
     var body = json.encode({
       "id": widget.item.iddetalhe,
       "avista": double.parse(cPrecoAvista.text),
-      "prazo": double.parse(cPrecoPrazo.text)
+      "prazo": double.parse(cPrecoPrazo.text),
+      "margem": double.parse(cMargem.text)
     });
 
-    post('compras/post_preco', body);
+    post('compras/post_preco', body, exibeMensagem);
+  }
+
+  void exibeMensagem(txt) {
+    alert(_scaffoldKey, txt['message']);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(title: Text("Detalhes")),
       body: ListView(
         children: <Widget>[
@@ -135,39 +145,52 @@ class _NotaItemDetalhe extends State<NotaItemDetalhe> {
                 child: RichText(
                     text: TextSpan(
               text: "Custo: " + widget.item.vlunitario.toStringAsFixed(2),
-              style: TextStyle(color: Colors.black, fontSize: 22),
+              style: TextStyle(color: Colors.black, fontSize: 20),
             ))),
           ),
           ListTile(
+            contentPadding: EdgeInsets.zero,
             title: Center(
                 child: RichText(
                     text: TextSpan(
               text: "ST: " +
                   widget.item.vlsubst.toStringAsFixed(2) +
-                  " / " +
-                  "IPI: " +
-                  widget.item.vlipi.toStringAsFixed(2),
-              style: TextStyle(color: Colors.black, fontSize: 22),
-            ))),
-          ),
-          ListTile(
-            title: Center(
-                child: RichText(
-                    text: TextSpan(
-              text: "Rateio: " + widget.item.vlrateio.toStringAsFixed(2),
-              style: TextStyle(color: Colors.black, fontSize: 22),
+                  " / IPI: " +
+                  widget.item.vlipi.toStringAsFixed(2) +
+                  " / Rateio: " +
+                  widget.item.vlrateio.toStringAsFixed(2),
+              style: TextStyle(color: Colors.black, fontSize: 20),
             ))),
           ),
           // Markup
           ListTile(
+            // title: TextFormField(
+            //   // controller: cPrecoAvista,
+            //   keyboardType: TextInputType.number,
+            //   style: TextStyle(
+            //     color: Colors.black,
+            //     fontSize: 24,
+            //   ),
+            // ),
             title: Center(
                 child: RichText(
                     text: TextSpan(
-              text: "Margem cadastrada: " +
-                  widget.item.allucrodesejada.toString() +
-                  "%",
+              text: "Margem cadastrada",
               style: TextStyle(color: Colors.black, fontSize: 22),
             ))),
+          ),
+          ListTile(
+            title: TextFormField(
+              textAlign: TextAlign.center,
+              controller: cMargem,
+              keyboardType: TextInputType.number,
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: 24,
+              ),
+            ),
+            leading: Text(""),
+            trailing: Text(""),
           ),
           // Preço final
           ListTile(
@@ -186,7 +209,7 @@ class _NotaItemDetalhe extends State<NotaItemDetalhe> {
                     text: TextSpan(
               text: "Preço sugerido: " +
                   ((widget.item.vlcusto + widget.item.vlrateio) *
-                          (1 + widget.item.allucrodesejada / 100))
+                          (1 + (widget.item.allucrodesejada ?? 0) / 100))
                       .toStringAsFixed(2),
               style: TextStyle(color: Colors.black, fontSize: 22),
             ))),
@@ -194,6 +217,7 @@ class _NotaItemDetalhe extends State<NotaItemDetalhe> {
           // Ajuste de preço
           ListTile(
             title: TextFormField(
+              textAlign: TextAlign.center,
               controller: cPrecoAvista,
               keyboardType: TextInputType.number,
               style: TextStyle(
@@ -209,6 +233,7 @@ class _NotaItemDetalhe extends State<NotaItemDetalhe> {
           // Ajuste de preço
           ListTile(
             title: TextFormField(
+              textAlign: TextAlign.center,
               controller: cPrecoPrazo,
               keyboardType: TextInputType.number,
               style: TextStyle(
@@ -231,7 +256,7 @@ class _NotaItemDetalhe extends State<NotaItemDetalhe> {
                     fontWeight: FontWeight.bold,
                     color: Colors.white),
               ),
-              onPressed: postPreco,
+              onPressed: () => postPreco(),
               color: Colors.green,
             )),
           ),

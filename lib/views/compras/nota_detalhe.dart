@@ -37,7 +37,7 @@ class _NotaDetalhe extends State<NotaDetalhe> {
     });
   }
 
-  void tap_item(NotaItem item) {
+  void tapItem(NotaItem item) {
     Navigator.pushNamed(context, '/views/compras/nota_item_detalhe',
         arguments: item);
   }
@@ -67,6 +67,18 @@ class _NotaDetalhe extends State<NotaDetalhe> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
+          actions: <Widget>[
+            FlatButton(
+              child: Text(
+                "Aplicar",
+                style: TextStyle(fontSize: 22),
+              ),
+              onPressed: () {
+                calcularRateio();
+              },
+              textColor: Colors.white,
+            )
+          ],
           title: TextFormField(
             controller: cValorRateio,
             onEditingComplete: calcularRateio,
@@ -87,7 +99,7 @@ class _NotaDetalhe extends State<NotaDetalhe> {
           itemBuilder: (BuildContext ctx, int index) {
             final item = itens[index];
             return ListTile(
-              onTap: () => tap_item(item),
+              onTap: () => tapItem(item),
               title: RichText(
                   text: TextSpan(
                 text: item.dsdetalhe + "\n",
