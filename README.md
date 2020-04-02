@@ -4,6 +4,8 @@ Projeto que fiz para aprender Python e facilitar a vida em minha loja, para prec
 
 Sistema simples, que lista as notas de entrada, abre os itens da nota, e permite ajustar o preço de venda. Atualmente eu o uso associado ao sistema Alterdata, mas você pode adaptá-lo simplesmente ajustando as queries no arquivo compras.py
 
+![screenshot](https://raw.githubusercontent.com/felipesiervi/engine_mobile/master/screenshots/Screenshot_01.png?token=AIPS3EFKO475Q3DZTKJRGVK6QXHGS)
+
 # engine_api
 
 Esse app trabalha junto com a API em python, disponível no meu repositório.
