@@ -37,6 +37,12 @@ class _Preferencias extends State<Preferencias> {
     get('preferencias', load);
   }
 
+  void recarregar() {
+    print("Atualizando...");
+    atualizaPreferencia('ServidorAPI', cServidorAPI.text);
+    get('preferencias', load);
+  }
+
   void load(decoded) {
     cIpBancoDados.text = decoded['IpBancoDados'];
     cUsuario.text = decoded['Usuario'];
@@ -66,7 +72,12 @@ class _Preferencias extends State<Preferencias> {
             ),
             decoration: InputDecoration(
                 labelText: "Servidor API", labelStyle: TextStyle()),
-          )),
+          ),
+          trailing: FlatButton(
+            child: Icon(Icons.refresh),
+            onPressed: recarregar,
+          ),
+          ),
           ListTile(
               title: TextFormField(
             controller: cIpBancoDados,

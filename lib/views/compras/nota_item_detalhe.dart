@@ -5,36 +5,48 @@ import '../../models/compras.dart';
 import '../../util.dart';
 
 class NotaItemDetalhe extends StatefulWidget {
-  final NotaItem item;
+  final List<NotaItem> listaItem;
+  final int itemAtual;
 
-  NotaItemDetalhe(this.item);
+  NotaItemDetalhe(this.listaItem, this.itemAtual);
 
   @override
-  _NotaItemDetalhe createState() => _NotaItemDetalhe(item);
+  _NotaItemDetalhe createState() => _NotaItemDetalhe(listaItem, itemAtual);
 }
 
 class _NotaItemDetalhe extends State<NotaItemDetalhe> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
-  final NotaItem item;
+  final List<NotaItem> listaItem;
+  int itemAtual;
+  NotaItem item;
   var cPrecoAvista = TextEditingController();
   var cPrecoPrazo = TextEditingController();
   var cMargem = TextEditingController();
+  var cPrecoSugerido = TextEditingController();
   double precoAvista;
   double precoPrazo;
+  double precoCusto;
   double adiciona = 0;
 
-  _NotaItemDetalhe(this.item) {
+  _NotaItemDetalhe(this.listaItem, this.itemAtual) {
     // item.vlsubst = item.vlsubst;
     // item.vlipi = item.vlipi;
+    calculatela();
+  }
+
+  void calculatela(){
+    item = listaItem[itemAtual];
     precoAvista = item.vlprecovista;
     precoPrazo = item.vlprecoprazo;
-
+    cPrecoSugerido.text = (item.vlcusto * (1+item.allucrodesejada / 100)).toStringAsFixed(2);
+    
     if (precoAvista > 20)
       adiciona = 0.5;
     else if (precoAvista > 1)
       adiciona = 0.1;
     else
       adiciona = 0.05;
+
   }
 
   @override
@@ -43,6 +55,16 @@ class _NotaItemDetalhe extends State<NotaItemDetalhe> {
     super.initState();
   }
 
+  void proximoItem() {
+    itemAtual += 1;
+    if(itemAtual >= listaItem.length){
+      itemAtual = listaItem.length - 1;
+      exibeMensagem({'message': 'Este é o último item da nota.'});
+    }
+
+    calculatela();
+    call(item.iddocumentoitem);
+  }
   void ajustaPrecoMais() {
     precoAvista = double.parse(cPrecoAvista.text) + adiciona;
     precoPrazo = calculaPrecoPrazo(precoAvista);
@@ -60,6 +82,24 @@ class _NotaItemDetalhe extends State<NotaItemDetalhe> {
     setState(() {
       cPrecoAvista.text = precoAvista.toStringAsFixed(2);
       cPrecoPrazo.text = precoPrazo.toStringAsFixed(2);
+    });
+  }
+
+  void ajustaMargemMais() {
+    double margem = double.parse(cMargem.text) + 1;
+
+    setState(() {
+      cMargem.text = margem.toStringAsFixed(2);
+      cPrecoSugerido.text = ((1+margem/100) * item.vlcusto).toStringAsFixed(2);
+    });
+  }
+
+  void ajustaMargemMenos() {
+    double margem = double.parse(cMargem.text) - 1;
+
+    setState(() {
+      cMargem.text = margem.toStringAsFixed(2);
+      cPrecoSugerido.text = ((1+margem/100) * item.vlcusto).toStringAsFixed(2);
     });
   }
 
@@ -110,7 +150,7 @@ class _NotaItemDetalhe extends State<NotaItemDetalhe> {
 
   Future<void> postPreco() async {
     var body = json.encode({
-      "id": widget.item.iddetalhe,
+      "id": item.iddetalhe,
       "avista": double.parse(cPrecoAvista.text),
       "prazo": double.parse(cPrecoPrazo.text),
       "margem": double.parse(cMargem.text)
@@ -135,7 +175,7 @@ class _NotaItemDetalhe extends State<NotaItemDetalhe> {
             title: Center(
                 child: RichText(
                     text: TextSpan(
-              text: widget.item.dsdetalhe,
+              text: item.dsdetalhe,
               style: TextStyle(color: Colors.black, fontSize: 22),
             ))),
           ),
@@ -144,7 +184,7 @@ class _NotaItemDetalhe extends State<NotaItemDetalhe> {
             title: Center(
                 child: RichText(
                     text: TextSpan(
-              text: "Custo: " + widget.item.vlunitario.toStringAsFixed(2),
+              text: "Custo: " + item.vlunitario.toStringAsFixed(2),
               style: TextStyle(color: Colors.black, fontSize: 20),
             ))),
           ),
@@ -154,11 +194,11 @@ class _NotaItemDetalhe extends State<NotaItemDetalhe> {
                 child: RichText(
                     text: TextSpan(
               text: "ST: " +
-                  widget.item.vlsubst.toStringAsFixed(2) +
+                  item.vlsubst.toStringAsFixed(2) +
                   " / IPI: " +
-                  widget.item.vlipi.toStringAsFixed(2) +
+                  item.vlipi.toStringAsFixed(2) +
                   " / Rateio: " +
-                  widget.item.vlrateio.toStringAsFixed(2),
+                  item.vlrateio.toStringAsFixed(2),
               style: TextStyle(color: Colors.black, fontSize: 20),
             ))),
           ),
@@ -189,18 +229,17 @@ class _NotaItemDetalhe extends State<NotaItemDetalhe> {
                 fontSize: 24,
               ),
             ),
-            leading: Text(""),
-            trailing: Text(""),
+            leading: FlatButton(
+                child: Icon(Icons.remove), onPressed: ajustaMargemMenos),
+            trailing: FlatButton(
+                child: Icon(Icons.add), onPressed: ajustaMargemMais),
           ),
           // Preço final
           ListTile(
-            title: Center(
-                child: RichText(
-                    text: TextSpan(
-              text: "Custo final: " +
-                  (widget.item.vlcusto + widget.item.vlrateio)
+            title : Center(child:RichText(
+              text: TextSpan(text: "Custo final: " + (item.vlcusto + item.vlrateio)
                       .toStringAsFixed(2),
-              style: TextStyle(color: Colors.black, fontSize: 22),
+                      style: TextStyle(color: Colors.black, fontSize: 22),
             ))),
           ),
           ListTile(
@@ -208,11 +247,10 @@ class _NotaItemDetalhe extends State<NotaItemDetalhe> {
                 child: RichText(
                     text: TextSpan(
               text: "Preço sugerido: " +
-                  ((widget.item.vlcusto + widget.item.vlrateio) *
-                          (1 + (widget.item.allucrodesejada ?? 0) / 100))
-                      .toStringAsFixed(2),
+                  cPrecoSugerido.text,
               style: TextStyle(color: Colors.black, fontSize: 22),
-            ))),
+              
+            )))
           ),
           // Ajuste de preço
           ListTile(
@@ -262,6 +300,11 @@ class _NotaItemDetalhe extends State<NotaItemDetalhe> {
           ),
         ],
       ),
+      floatingActionButton: FloatingActionButton(
+        child: FlatButton(
+                child: Icon(Icons.skip_next), onPressed: proximoItem),
+                onPressed: () {},
+                ),
     );
   }
 }

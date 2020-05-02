@@ -4,6 +4,8 @@ import 'package:engine_mobile/views/compras/nota_lista.dart';
 import 'package:engine_mobile/views/preferencias/preferencias.dart';
 import 'package:flutter/material.dart';
 
+import 'models/compras.dart';
+
 class RouteGenerator {
   static Route<dynamic> gerenateRoute(RouteSettings settings) {
     final args = settings.arguments;
@@ -14,7 +16,9 @@ class RouteGenerator {
       case '/views/compras/nota_detalhe':
         return MaterialPageRoute(builder: (_) => NotaDetalhe(args));
       case '/views/compras/nota_item_detalhe':
-        return MaterialPageRoute(builder: (_) => NotaItemDetalhe(args));
+        return MaterialPageRoute(builder: (_) => NotaItemDetalhe(
+          (args as List<dynamic>)[0] as List<NotaItem>, 
+          (args as List<dynamic>)[1] as int));
       case '/views/preferencias/preferencias':
         return MaterialPageRoute(builder: (_) => Preferencias());
       default:

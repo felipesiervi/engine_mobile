@@ -37,9 +37,9 @@ class _NotaDetalhe extends State<NotaDetalhe> {
     });
   }
 
-  void tapItem(NotaItem item) {
+  void tapItem(int index) {
     Navigator.pushNamed(context, '/views/compras/nota_item_detalhe',
-        arguments: item);
+        arguments: [itens, index]);
   }
 
   void calcularRateio() {
@@ -99,7 +99,7 @@ class _NotaDetalhe extends State<NotaDetalhe> {
           itemBuilder: (BuildContext ctx, int index) {
             final item = itens[index];
             return ListTile(
-              onTap: () => tapItem(item),
+              onTap: () => tapItem(index),
               title: RichText(
                   text: TextSpan(
                 text: item.dsdetalhe + "\n",
