@@ -1,5 +1,4 @@
 import 'package:engine_mobile/routes.dart';
-import 'package:engine_mobile/util.dart';
 import 'package:flutter/material.dart';
 
 void main() => runApp(EngineMobile());
