@@ -1,5 +1,6 @@
 class Fornecedor {
   String nmpessoa;
+  String idpessoa;
   String iddocumento;
   DateTime dtemissao;
   double vltotal;

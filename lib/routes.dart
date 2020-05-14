@@ -1,9 +1,12 @@
 import 'package:engine_mobile/views/compras/nota_detalhe.dart';
 import 'package:engine_mobile/views/compras/nota_item_detalhe.dart';
 import 'package:engine_mobile/views/compras/nota_lista.dart';
+import 'package:engine_mobile/views/compras/pedido_fornecedor_lista.dart';
+import 'package:engine_mobile/views/compras/pedido_lista.dart';
 import 'package:engine_mobile/views/preferencias/preferencias.dart';
 import 'package:flutter/material.dart';
 
+import 'main_menu.dart';
 import 'models/compras.dart';
 
 class RouteGenerator {
@@ -12,6 +15,8 @@ class RouteGenerator {
 
     switch (settings.name) {
       case '/':
+        return MaterialPageRoute(builder: (_) => MainMenu());
+      case '/views/compras/nota_lista':
         return MaterialPageRoute(builder: (_) => NotaLista());
       case '/views/compras/nota_detalhe':
         return MaterialPageRoute(builder: (_) => NotaDetalhe(args));
@@ -21,6 +26,10 @@ class RouteGenerator {
           (args as List<dynamic>)[1] as int));
       case '/views/preferencias/preferencias':
         return MaterialPageRoute(builder: (_) => Preferencias());
+      case '/views/compras/pedido_lista':
+        return MaterialPageRoute(builder: (_) => PedidoLista());
+      case '/views/compras/pedido_fornecedor_lista':
+        return MaterialPageRoute(builder: (_) => PedidoFornecedorLista());
       default:
         return _errorRoute();
     }
