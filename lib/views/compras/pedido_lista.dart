@@ -31,6 +31,9 @@ class _PedidoListaState extends State<PedidoLista> {
     Navigator.pushNamed(context, '/views/compras/nota_detalhe', arguments: id);
   }
 
+  @override
+  
+
 //
   @override
   Widget build(BuildContext context) {
@@ -72,30 +75,16 @@ class _PedidoListaState extends State<PedidoLista> {
                         color: Colors.black,
                         fontSize: 18,
                         fontWeight: FontWeight.bold)),
-                TextSpan(
-                    text: "  Valor: ",
-                    style: TextStyle(color: Colors.black, fontSize: 16)),
-                TextSpan(
-                    text: item.vltotal.toStringAsFixed(2),
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold)),
+
               ],
             )),
             key: Key(item.iddocumento),
-            // leading: Text(),
-            // onChanged: (value) {
-            //   setState(() {
-            //     item.done = value;
-            //   });
-            // },
           );
         },
       ),
       floatingActionButton: FloatingActionButton(
         child: FlatButton(
-                child: Icon(Icons.add), onPressed: (){ Navigator.pushNamed(context, '/views/compras/pedido_fornecedor_lista'); })),
+                child: Icon(Icons.add), onPressed: (){ Navigator.pushNamed(context, '/views/compras/pedido_fornecedor_lista').then((value) => call()); })),
     );
   }
 }

@@ -3,11 +3,13 @@ class Fornecedor {
   String idpessoa;
   String iddocumento;
   DateTime dtemissao;
+  String strdata;
   double vltotal;
 
   Fornecedor({this.nmpessoa, this.vltotal, this.iddocumento, this.dtemissao});
 
   Fornecedor.fromJson(Map<String, dynamic> json) {
+    idpessoa = json['idpessoa'] ?? "";
     nmpessoa = json['nmpessoa'] ?? "";
     vltotal = json['vltotal'] as double ?? 0;
     iddocumento = json['iddocumento'] ?? "";
@@ -16,7 +18,7 @@ class Fornecedor {
   }
 
   Map toJson() {
-    return {'nmpessoa': nmpessoa, 'vltotal': vltotal};
+    return {'nmpessoa': nmpessoa, 'vltotal': vltotal, 'idpessoa': idpessoa, 'strdata': strdata};
   }
 }
 

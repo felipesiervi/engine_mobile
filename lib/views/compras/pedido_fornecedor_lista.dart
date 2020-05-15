@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import '../../models/compras.dart';
 import '../../util.dart';
+import 'package:intl/intl.dart';
+
 
 class PedidoFornecedorLista extends StatefulWidget {
   @override
@@ -46,13 +48,15 @@ class _PedidoFornecedorListaState extends State<PedidoFornecedorLista> {
     });
   }
 
-  void tapItem(String id) {
-    Navigator.pushNamed(context, '/views/compras/nota_detalhe', arguments: id);
+  void tapItem(Fornecedor obj) {
+    obj.strdata = DateFormat('yyyy_MM_dd_kk_mm').format(DateTime.now());
+    post('compras/post_criar_pedido', obj, goback);
   }
 
-  @override
+  void goback(txt) {
+    Navigator.pop(context, true);
+  }
 
-//
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -78,7 +82,7 @@ class _PedidoFornecedorListaState extends State<PedidoFornecedorLista> {
         itemBuilder: (BuildContext ctx, int index) {
           final item = fornecedores[index];
           return ListTile(
-            onTap: () => tapItem(item.iddocumento),
+            onTap: () => tapItem(item),
             title: RichText(
                 text: TextSpan(
               text: item.nmpessoa,
