@@ -27,14 +27,10 @@ class _PedidoListaState extends State<PedidoLista> {
     });
   }
 
-  void tapItem(String id) {
-    Navigator.pushNamed(context, '/views/compras/nota_detalhe', arguments: id);
+  void tapItem(Fornecedor fornec) {
+    Navigator.pushNamed(context, '/views/compras/pedido_detalhe', arguments: fornec);
   }
 
-  @override
-  
-
-//
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -58,10 +54,10 @@ class _PedidoListaState extends State<PedidoLista> {
         itemBuilder: (BuildContext ctx, int index) {
           final item = fornecedores[index];
           return ListTile(
-            onTap: () => tapItem(item.iddocumento),
+            onTap: () => tapItem(item),
             title: RichText(
                 text: TextSpan(
-              text: item.nmpessoa + "\n",
+              text: item.nmpessoa.replaceAll('-', ' ') + "\n",
               style: TextStyle(color: Colors.black, fontSize: 20),
               children: <TextSpan>[
                 TextSpan(
@@ -84,7 +80,9 @@ class _PedidoListaState extends State<PedidoLista> {
       ),
       floatingActionButton: FloatingActionButton(
         child: FlatButton(
-                child: Icon(Icons.add), onPressed: (){ Navigator.pushNamed(context, '/views/compras/pedido_fornecedor_lista').then((value) => call()); })),
+                child: Icon(Icons.add), onPressed: (){ Navigator.pushNamed(context, '/views/compras/pedido_fornecedor_lista').then((value) => call()); }),
+                onPressed: () {},),
+                
     );
   }
 }

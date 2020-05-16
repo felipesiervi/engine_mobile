@@ -92,9 +92,6 @@ class _PedidoFornecedorListaState extends State<PedidoFornecedorLista> {
           );
         },
       ),
-      floatingActionButton: FloatingActionButton(
-        child: FlatButton(
-                child: Icon(Icons.add), onPressed: (){})),
     );
   }
 }

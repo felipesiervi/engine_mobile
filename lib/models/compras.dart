@@ -4,12 +4,14 @@ class Fornecedor {
   String iddocumento;
   DateTime dtemissao;
   String strdata;
+  String arquivo;
   double vltotal;
 
-  Fornecedor({this.nmpessoa, this.vltotal, this.iddocumento, this.dtemissao});
+  Fornecedor({this.nmpessoa, this.vltotal, this.iddocumento, this.dtemissao, this.arquivo});
 
   Fornecedor.fromJson(Map<String, dynamic> json) {
     idpessoa = json['idpessoa'] ?? "";
+    arquivo = json['arquivo'] ?? "";
     nmpessoa = json['nmpessoa'] ?? "";
     vltotal = json['vltotal'] as double ?? 0;
     iddocumento = json['iddocumento'] ?? "";
@@ -18,7 +20,7 @@ class Fornecedor {
   }
 
   Map toJson() {
-    return {'nmpessoa': nmpessoa, 'vltotal': vltotal, 'idpessoa': idpessoa, 'strdata': strdata};
+    return {'nmpessoa': nmpessoa, 'vltotal': vltotal, 'idpessoa': idpessoa, 'strdata': strdata, 'arquivo': arquivo};
   }
 }
 
@@ -36,6 +38,10 @@ class NotaItem {
   double vlfreterateado;
   double vlrateio;
   double vlcusto;
+  double demanda;
+  double qtestoque;
+  String ultajuste;
+  String arquivo;
 
   NotaItem(
       {this.iddocumentoitem,
@@ -50,21 +56,27 @@ class NotaItem {
       this.vlfreterateado,
       this.vlrateio,
       this.vlcusto,
-      this.vlunitario});
+      this.vlunitario,
+      this.demanda,
+      this.qtestoque,
+      this.ultajuste});
 
   NotaItem.fromJson(Map<String, dynamic> json) {
     iddocumentoitem = json['iddocumentoitem'];
     dsdetalhe = json['dsdetalhe'];
     iddetalhe = json['iddetalhe'];
-    qtitem = json['qtitem'] as int;
-    vlsubst = json['vlsubst'] as double;
-    vlunitario = json['vlunitario'] as double;
-    vlipi = json['vlipi'] as double;
-    allucrodesejada = json['allucrodesejada'] as double;
-    vlprecoprazo = json['vlprecoprazo'] as double;
-    vlprecovista = json['vlprecovista'] as double;
-    vlfreterateado = json['vlfreterateado'] as double;
-    vlrateio = json['vlrateio'] as double;
+    qtitem = json['qtitem'] as int ?? 0;
+    vlsubst = json['vlsubst'] as double ?? 0;
+    vlunitario = json['vlunitario'] as double ?? 0;
+    vlipi = json['vlipi'] as double ?? 0;
+    allucrodesejada = json['allucrodesejada'] as double ?? 0;
+    vlprecoprazo = json['vlprecoprazo'] as double ?? 0;
+    vlprecovista = json['vlprecovista'] as double ?? 0;
+    vlfreterateado = json['vlfreterateado'] as double ?? 0;
+    vlrateio = json['vlrateio'] as double ?? 0;
+    demanda = json['demanda'] as double ?? 0;
+    ultajuste = json['ultajuste'];
+    qtestoque = json['qtestoque'] as double ?? 0;
     vlcusto = vlsubst + vlipi + vlunitario;
   }
 }
