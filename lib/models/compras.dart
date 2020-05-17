@@ -1,3 +1,7 @@
+import 'package:json_annotation/json_annotation.dart';
+
+part 'compras.g.dart';
+
 class Fornecedor {
   String nmpessoa;
   String idpessoa;
@@ -79,4 +83,21 @@ class NotaItem {
     qtestoque = json['qtestoque'] as double ?? 0;
     vlcusto = vlsubst + vlipi + vlunitario;
   }
+
+    Map toJson() {
+    return {'iddetalhe': iddetalhe, 'dsdetalhe': dsdetalhe, 'arquivo': arquivo};
+  }
+}
+
+@JsonSerializable()
+class PedidoDetalheHistDTO {
+  String nomePessoa;
+  String nomeProduto;
+  String id;
+  double valorCusto;
+  String emissao;
+
+  PedidoDetalheHistDTO(this.nomePessoa, this.nomeProduto, this.id, this.valorCusto, this.emissao);
+  factory PedidoDetalheHistDTO.fromJson(Map<String, dynamic> json) => _$PedidoDetalheHistDTOFromJson(json);
+  Map<String, dynamic> toJson() => _$PedidoDetalheHistDTOToJson(this);
 }

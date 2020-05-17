@@ -2,6 +2,7 @@ import 'package:engine_mobile/views/compras/nota_detalhe.dart';
 import 'package:engine_mobile/views/compras/nota_item_detalhe.dart';
 import 'package:engine_mobile/views/compras/nota_lista.dart';
 import 'package:engine_mobile/views/compras/pedido_detalhe.dart';
+import 'package:engine_mobile/views/compras/pedido_detalhe_historico.dart';
 import 'package:engine_mobile/views/compras/pedido_fornecedor_lista.dart';
 import 'package:engine_mobile/views/compras/pedido_lista.dart';
 import 'package:engine_mobile/views/preferencias/preferencias.dart';
@@ -33,6 +34,8 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => PedidoFornecedorLista());
       case '/views/compras/pedido_detalhe':
         return MaterialPageRoute(builder: (_) => PedidoDetalhe(args as Fornecedor));
+      case '/views/compras/pedido_detalhe_historico':
+        return MaterialPageRoute(builder: (_) => PedidoDetalheHist(args as NotaItem));
       default:
         return _errorRoute();
     }

@@ -17,7 +17,6 @@ class _PedidoDetalhe extends State<PedidoDetalhe> {
   List<NotaItem> itens = new List<NotaItem>();
   var cValorRateio = TextEditingController();
   static Fornecedor fornecedor;
-  static DismissDirection directionVar;
 
   _PedidoDetalhe(fornecedor) {
     _PedidoDetalhe.fornecedor = fornecedor;
@@ -44,6 +43,10 @@ class _PedidoDetalhe extends State<PedidoDetalhe> {
     await post('compras/post_pedido_remover_item', item, refresh);
   }
 
+  void onTap(NotaItem item){
+    Navigator.pushNamed(context, '/views/compras/pedido_detalhe_historico', arguments: item);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,21 +55,26 @@ class _PedidoDetalhe extends State<PedidoDetalhe> {
           itemBuilder: (BuildContext ctx, int index) {
             final item = itens[index];
             return Dismissible(
-              // onDismissed: () => tapItem(index),
-              child: RichText(
+              child: ListTile(
+                onTap: () => onTap(item),
+                title: RichText(
                   text: TextSpan(
-                text: item.dsdetalhe + "\n",
-                style: TextStyle(color: Colors.black, fontSize: 22),
-                children: <TextSpan>[
-                  TextSpan(
-                      text: "Qtde Atual: " + item.qtestoque.toString(),
-                      style: TextStyle(color: Colors.black, fontSize: 16)),
-                  TextSpan(
-                      text: " / Último Ajuste: " +
-                          (item.ultajuste ?? ""),
-                      style: TextStyle(color: Colors.black, fontSize: 16)),
-                ],
-              )),
+                    text: item.dsdetalhe + "\n",
+                    style: TextStyle(color: Colors.black, fontSize: 22),
+                    children: <TextSpan>[
+                      TextSpan(
+                          text: "Estoque: " + item.qtestoque.toString(),
+                          style: TextStyle(color: Colors.black, fontSize: 16)),
+                      TextSpan(
+                          text: " / Ajuste: " +
+                              (item.ultajuste ?? ""),
+                          style: TextStyle(color: Colors.black, fontSize: 16)),
+                      TextSpan(
+                          text: " / Comprar: " +
+                              (item.demanda.toStringAsFixed(0) ?? ""),
+                          style: TextStyle(color: Colors.black, fontSize: 16)),
+                    ],
+              ))),
               key: Key(item.iddetalhe),
               background: Container(color: Colors.green),
               secondaryBackground: Container(color: Colors.red),
@@ -74,6 +82,7 @@ class _PedidoDetalhe extends State<PedidoDetalhe> {
                 if(direction == DismissDirection.endToStart)
                   removeItem(item);
               },
+              
             );
           },
         ));
