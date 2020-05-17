@@ -64,9 +64,7 @@ class _PedidoListaState extends State<PedidoLista> {
                     text: "data: ",
                     style: TextStyle(color: Colors.black, fontSize: 16)),
                 TextSpan(
-                    text: item.dtemissao.day.toString().padLeft(2, '0') +
-                        "/" +
-                        item.dtemissao.month.toString().padLeft(2, '0'),
+                    text: item.strdata,
                     style: TextStyle(
                         color: Colors.black,
                         fontSize: 18,

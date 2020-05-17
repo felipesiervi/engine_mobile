@@ -17,6 +17,7 @@ class Fornecedor {
     idpessoa = json['idpessoa'] ?? "";
     arquivo = json['arquivo'] ?? "";
     nmpessoa = json['nmpessoa'] ?? "";
+    strdata = json['strdata'] ?? "";
     vltotal = json['vltotal'] as double ?? 0;
     iddocumento = json['iddocumento'] ?? "";
     dtemissao =
@@ -85,7 +86,7 @@ class NotaItem {
     ultajuste = json['ultajuste'];
     arquivo = json['arquivo'];
     qtestoque = json['qtestoque'] as double ?? 0;
-    vlcompra = json['vlcompra'].toDouble() ?? 0;
+    vlcompra = json['vlcompra']?.toDouble() ?? 0;
     qtdcompra = json['qtdcompra'] as int ?? 0;
     vlcusto = vlsubst + vlipi + vlunitario;
   }
