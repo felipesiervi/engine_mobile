@@ -28,6 +28,7 @@ class Fornecedor {
   }
 }
 
+@JsonSerializable()
 class NotaItem {
   String iddocumentoitem;
   String dsdetalhe;
@@ -46,6 +47,8 @@ class NotaItem {
   double qtestoque;
   String ultajuste;
   String arquivo;
+  double vlcompra;
+  int qtdcompra;
 
   NotaItem(
       {this.iddocumentoitem,
@@ -80,12 +83,15 @@ class NotaItem {
     vlrateio = json['vlrateio'] as double ?? 0;
     demanda = json['demanda'] as double ?? 0;
     ultajuste = json['ultajuste'];
+    arquivo = json['arquivo'];
     qtestoque = json['qtestoque'] as double ?? 0;
+    vlcompra = json['vlcompra'].toDouble() ?? 0;
+    qtdcompra = json['qtdcompra'] as int ?? 0;
     vlcusto = vlsubst + vlipi + vlunitario;
   }
 
     Map toJson() {
-    return {'iddetalhe': iddetalhe, 'dsdetalhe': dsdetalhe, 'arquivo': arquivo};
+    return {'iddetalhe': iddetalhe, 'dsdetalhe': dsdetalhe, 'arquivo': arquivo, 'qtdcompra': qtdcompra, 'vlcompra': vlcompra};
   }
 }
 
@@ -101,3 +107,4 @@ class PedidoDetalheHistDTO {
   factory PedidoDetalheHistDTO.fromJson(Map<String, dynamic> json) => _$PedidoDetalheHistDTOFromJson(json);
   Map<String, dynamic> toJson() => _$PedidoDetalheHistDTOToJson(this);
 }
+

@@ -13,8 +13,8 @@ class _MainMenuState extends State<MainMenu> {
   void initState() {
     super.initState();
     menu = [
-      MenuItem('Precificação', '/views/compras/nota_lista'),
-      MenuItem('Compras', '/views/compras/pedido_lista'),
+      MenuItem('Precificação', Icon(Icons.attach_money),'/views/compras/nota_lista'),
+      MenuItem('Compras', Icon(Icons.shopping_cart, color: Colors.green,),'/views/compras/pedido_lista'),
     ];
   }
 
@@ -28,21 +28,24 @@ class _MainMenuState extends State<MainMenu> {
       
       body: 
       
-      ListView.builder(
-        itemCount: 2,
-        
+      GridView.builder(
+        itemCount: menu.length,
         itemBuilder: (BuildContext ctx, int index) {
           final item = menu[index];
           return ListTile(
             onTap: () => tapItem(index),
-            title: RichText(
+            title: item.icone,
+            subtitle: RichText(
                 text: TextSpan(
-              text: item.nome,
-              style: TextStyle(color: Colors.black, fontSize: 20),
+                  text: item.nome,
+                  style: TextStyle(color: Colors.black, fontSize: 20),
             )),
             key: Key(item.nome),
           );
-        },
+        }, gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          childAspectRatio: 3.0,
+        ),
       ),
     );
   }
@@ -50,7 +53,8 @@ class _MainMenuState extends State<MainMenu> {
 
 class MenuItem {
   String nome;
+  Icon icone;
   String rota;
 
-  MenuItem(this.nome, this.rota);
+  MenuItem(this.nome, this.icone, this.rota);
 }
