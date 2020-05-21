@@ -45,7 +45,7 @@ class _NotaDetalhe extends State<NotaDetalhe> {
       double rateio = double.parse(cValorRateio.text);
       double totalNota = itens
           .map((x) =>
-              (x.vlsubst + x.vlipi + x.vlunitario + x.vlfreterateado) *
+              (x.vlsubst + x.vlipi + x.vlunitario) *
               x.qtitem)
           .fold(0, (p, c) => p + c);
 

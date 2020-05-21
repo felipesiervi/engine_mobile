@@ -13,8 +13,8 @@ class _MainMenuState extends State<MainMenu> {
   void initState() {
     super.initState();
     menu = [
-      MenuItem('Precificação', Icon(Icons.attach_money),'/views/compras/nota_lista'),
-      MenuItem('Compras', Icon(Icons.shopping_cart, color: Colors.green,),'/views/compras/pedido_lista'),
+      MenuItem('Precificação', Icon(Icons.attach_money, size: 50, color: Colors.blue,),'/views/compras/nota_lista'),
+      MenuItem('Compras', Icon(Icons.shopping_cart, size: 50, color: Colors.blue,),'/views/compras/pedido_lista'),
     ];
   }
 
@@ -36,6 +36,7 @@ class _MainMenuState extends State<MainMenu> {
             onTap: () => tapItem(index),
             title: item.icone,
             subtitle: RichText(
+              textAlign: TextAlign.center,
                 text: TextSpan(
                   text: item.nome,
                   style: TextStyle(color: Colors.black, fontSize: 20),

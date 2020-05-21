@@ -37,7 +37,7 @@ class _NotaItemDetalhe extends State<NotaItemDetalhe> {
     item = listaItem[itemAtual];
     precoAvista = item.vlprecovista;
     precoPrazo = item.vlprecoprazo;
-    cPrecoSugerido.text = (item.vlcusto * (1+item.allucrodesejada / 100)).toStringAsFixed(2);
+    cPrecoSugerido.text = ((item.vlcusto + item.vlrateio) * (1+item.allucrodesejada / 100)).toStringAsFixed(2);
     
     if (precoAvista > 20)
       adiciona = 0.5;
