@@ -13,7 +13,8 @@ class _MainMenuState extends State<MainMenu> {
   void initState() {
     super.initState();
     menu = [
-      MenuItem('Precificação', Icon(Icons.attach_money, size: 50, color: Colors.blue,),'/views/compras/nota_lista'),
+      MenuItem('Precificação Notas', Icon(Icons.attach_money, size: 50, color: Colors.blue,),'/views/compras/nota_lista'),
+      MenuItem('Precificação em Lote', Icon(Icons.attach_money, size: 50, color: Colors.blue,),'/views/compras/precificar_lote_lista'),
       MenuItem('Compras', Icon(Icons.shopping_cart, size: 50, color: Colors.blue,),'/views/compras/pedido_lista'),
     ];
   }

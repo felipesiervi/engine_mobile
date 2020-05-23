@@ -67,6 +67,7 @@ class _PedidoDetalheHist extends State<PedidoItemHist> {
           style: TextStyle(fontSize: 20),
         ),
         actions:  <Widget>[
+          DropdownButtonHideUnderline(child: 
           DropdownButton<String>(
             items: <String>['Inativar produto'].map((String value) {
               return new DropdownMenuItem<String>(
@@ -74,11 +75,13 @@ class _PedidoDetalheHist extends State<PedidoItemHist> {
                 child: new Text(value),
               );
             }).toList(),
+            style: Theme.of(context).textTheme.bodyText1,
+            // isExpanded: true,
             onChanged: (op) {
               removeItem();
             },
             icon: Icon(Icons.menu,color: Colors.white),
-          )
+          ))
         ],
       ),
       body: DataTable(

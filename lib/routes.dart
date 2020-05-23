@@ -6,6 +6,7 @@ import 'package:engine_mobile/views/compras/pedido_item_comprar.dart';
 import 'package:engine_mobile/views/compras/pedido_item_historico.dart';
 import 'package:engine_mobile/views/compras/pedido_fornecedor_lista.dart';
 import 'package:engine_mobile/views/compras/pedido_lista.dart';
+import 'package:engine_mobile/views/compras/precificar_lote_lista.dart';
 import 'package:engine_mobile/views/preferencias/preferencias.dart';
 import 'package:flutter/material.dart';
 
@@ -39,6 +40,8 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => PedidoItemHist(args as NotaItem));
       case '/views/compras/pedido_item_comprar':
         return MaterialPageRoute(builder: (_) => PedidoItemComprar(args as NotaItem));
+      case '/views/compras/precificar_lote_lista':
+        return MaterialPageRoute(builder: (_) => PrecificarLoteLista());
       default:
         return _errorRoute();
     }

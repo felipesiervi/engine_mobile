@@ -10,7 +10,8 @@ Future getPreferencias(func) async {
   Map<String, dynamic> ret = {};
   ret['ServidorAPI'] = prefs.getString('ServidorAPI');
   params = ret;
-  func();
+  if(func != null)
+    func();
 }
 
 Future atualizaPreferencia(chave, valor) async {
