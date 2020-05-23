@@ -89,7 +89,7 @@ class _NotaItemDetalhe extends State<NotaItemDetalhe> {
 
     setState(() {
       cMargem.text = margem.toStringAsFixed(2);
-      cPrecoSugerido.text = ((1+margem/100) * item.vlcusto).toStringAsFixed(2);
+      cPrecoSugerido.text = ((1+margem/100) * (item.vlcusto + item.vlrateio)).toStringAsFixed(2);
     });
   }
 
@@ -98,7 +98,7 @@ class _NotaItemDetalhe extends State<NotaItemDetalhe> {
 
     setState(() {
       cMargem.text = margem.toStringAsFixed(2);
-      cPrecoSugerido.text = ((1+margem/100) * item.vlcusto).toStringAsFixed(2);
+      cPrecoSugerido.text = ((1+margem/100) * (item.vlcusto + item.vlrateio)).toStringAsFixed(2);
     });
   }
 
