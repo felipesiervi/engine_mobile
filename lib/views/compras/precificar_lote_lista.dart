@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import '../../models/compras.dart';
 import '../../util.dart';
@@ -11,7 +13,7 @@ class PrecificarLoteLista extends StatefulWidget {
 class _PrecificarLoteListaState extends State<PrecificarLoteLista> {
   var cConsulta = TextEditingController();
   List<NotaItem> itens = new List<NotaItem>();
-  String _item = '';
+  NotaItem _item;
   int esperar = 2;
   bool esperando = false;
 
@@ -50,6 +52,23 @@ class _PrecificarLoteListaState extends State<PrecificarLoteLista> {
     Navigator.pop(context, true);
   }
 
+  void atualizarPrecos() async{
+    FocusScope.of(context).requestFocus(FocusNode());
+    for(var item in itens){
+      if(item.qtestoque == 1) {
+        var body = json.encode({
+        "id": item.iddetalhe,
+        "avista": _item.vlprecovista,
+        "prazo": _item.vlprecoprazo,
+        "margem": _item.allucrodesejada
+        });
+
+        await post('compras/post_preco', body, null);
+      }
+    }
+    call(nome:cConsulta.text);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -69,21 +88,30 @@ class _PrecificarLoteListaState extends State<PrecificarLoteLista> {
                   color: Colors.white,
                 )),
           ),
+          actions: <Widget>[
+            FlatButton(
+              child: Text("Aplicar", style: TextStyle(color: Colors.white, fontSize: 20),),
+              onPressed: atualizarPrecos,
+            )
+          ],
         ),
       body: ListView.builder(
         itemCount: itens.length,
         itemBuilder: (BuildContext ctx, int index) {
           var item = itens[index];
-          return RadioListTile(
-            value: item.iddetalhe,
+          return RadioListTile<NotaItem>(
+            value: item,
             groupValue: _item,
-            onChanged: (String i) { 
+            onChanged: (NotaItem i) { 
+              FocusScope.of(context).requestFocus(FocusNode());
               setState(() {
                 _item = i;
               });
             },
             secondary: Checkbox(
               onChanged: (bool i) {
+                FocusScope.of(context).requestFocus(FocusNode());
+
                 setState(() {
                   item.qtestoque = i ? 1 : 0;
                 });

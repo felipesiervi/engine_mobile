@@ -46,12 +46,17 @@ class _NotaItemDetalhe extends State<NotaItemDetalhe> {
     else
       adiciona = 0.05;
 
+
+
   }
 
   @override
   void initState() {
-    call(item.iddocumentoitem);
+
     super.initState();
+
+    call(item);
+    
   }
 
   void proximoItem() {
@@ -62,7 +67,7 @@ class _NotaItemDetalhe extends State<NotaItemDetalhe> {
     }
 
     calculatela();
-    call(item.iddocumentoitem);
+    call(item);
   }
   void ajustaPrecoMais() {
     precoAvista = double.parse(cPrecoAvista.text) + adiciona;
@@ -132,8 +137,11 @@ class _NotaItemDetalhe extends State<NotaItemDetalhe> {
     return prazo;
   }
 
-  Future call(id) async {
-    await get('compras/get_nota_item?id=' + id, load);
+  Future call(NotaItem item) async {
+    if(listaItem[itemAtual].idmontagem == "")
+      await get('compras/get_nota_item?id=' + item.iddocumentoitem, load);
+    else
+      loadoff(item);
   }
 
   void load(decoded) {
@@ -144,6 +152,13 @@ class _NotaItemDetalhe extends State<NotaItemDetalhe> {
           double.parse(decoded['vlprecoprazo'].toString()).toStringAsFixed(2);
       cMargem.text = double.parse(decoded['allucrodesejada'].toString())
           .toStringAsFixed(2);
+    });
+  }
+  void loadoff(NotaItem i) {
+    setState(() {
+      cPrecoAvista.text = i.vlprecovista.toStringAsFixed(2);
+      cPrecoPrazo.text = i.vlprecoprazo.toStringAsFixed(2);
+      cMargem.text = i.allucrodesejada.toStringAsFixed(2);
     });
   }
 

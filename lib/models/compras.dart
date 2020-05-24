@@ -50,6 +50,7 @@ class NotaItem {
   String arquivo;
   double vlcompra;
   int qtdcompra;
+  String idmontagem;
 
   NotaItem(
       {this.iddocumentoitem,
@@ -67,7 +68,8 @@ class NotaItem {
       this.vlunitario,
       this.demanda,
       this.qtestoque,
-      this.ultajuste});
+      this.ultajuste,
+      this.idmontagem});
 
   NotaItem.fromJson(Map<String, dynamic> json) {
     iddocumentoitem = json['iddocumentoitem'];
@@ -88,11 +90,12 @@ class NotaItem {
     qtestoque = json['qtestoque'] as double ?? 0;
     vlcompra = json['vlcompra']?.toDouble() ?? 0;
     qtdcompra = json['qtdcompra'] as int ?? 0;
+    idmontagem = json['idmontagem'];
     vlcusto = vlsubst + vlipi + vlunitario;
   }
 
     Map toJson() {
-    return {'iddetalhe': iddetalhe, 'dsdetalhe': dsdetalhe, 'arquivo': arquivo, 'qtdcompra': qtdcompra, 'vlcompra': vlcompra};
+    return {'iddetalhe': iddetalhe, 'dsdetalhe': dsdetalhe, 'arquivo': arquivo, 'qtdcompra': qtdcompra, 'vlcompra': vlcompra, 'idmontagem': idmontagem};
   }
 }
 
