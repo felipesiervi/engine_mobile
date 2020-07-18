@@ -28,7 +28,12 @@ class _PedidoListaState extends State<PedidoLista> {
   }
 
   void tapItem(Fornecedor fornec) {
-    Navigator.pushNamed(context, '/views/compras/pedido_detalhe', arguments: fornec);
+    Navigator.pushNamed(context, '/views/compras/pedido_detalhe',
+        arguments: fornec);
+  }
+
+  Future removeItem(Fornecedor item) async {
+    await post('compras/post_pedido_arquivar', item, call);
   }
 
   @override
@@ -53,34 +58,48 @@ class _PedidoListaState extends State<PedidoLista> {
         itemCount: fornecedores.length,
         itemBuilder: (BuildContext ctx, int index) {
           final item = fornecedores[index];
-          return ListTile(
-            onTap: () => tapItem(item),
-            title: RichText(
-                text: TextSpan(
-              text: item.nmpessoa.replaceAll('-', ' ') + "\n",
-              style: TextStyle(color: Colors.black, fontSize: 20),
-              children: <TextSpan>[
-                TextSpan(
-                    text: "data: ",
-                    style: TextStyle(color: Colors.black, fontSize: 16)),
-                TextSpan(
-                    text: item.strdata,
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold)),
-
-              ],
+          return Dismissible(
+            child: Container(
+                child: ListTile(
+              onTap: () => tapItem(item),
+              title: RichText(
+                  text: TextSpan(
+                text: item.nmpessoa.replaceAll('-', ' ') + "\n",
+                style: TextStyle(color: Colors.black, fontSize: 20),
+                children: <TextSpan>[
+                  TextSpan(
+                      text: "data: ",
+                      style: TextStyle(color: Colors.black, fontSize: 16)),
+                  TextSpan(
+                      text: item.strdata,
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold)),
+                ],
+              )),
+              key: Key(item.iddocumento),
             )),
             key: Key(item.iddocumento),
+            direction: DismissDirection.endToStart,
+            background: Container(color: Colors.green),
+            secondaryBackground: Container(color: Colors.red),
+            onDismissed: (direction) {
+              if (direction == DismissDirection.endToStart) removeItem(item);
+            },
           );
         },
       ),
       floatingActionButton: FloatingActionButton(
         child: FlatButton(
-                child: Icon(Icons.add), onPressed: (){ Navigator.pushNamed(context, '/views/compras/pedido_fornecedor_lista').then((value) => call()); }),
-                onPressed: () {},),
-                
+            child: Icon(Icons.add),
+            onPressed: () {
+              Navigator.pushNamed(
+                      context, '/views/compras/pedido_fornecedor_lista')
+                  .then((value) => call());
+            }),
+        onPressed: () {},
+      ),
     );
   }
 }

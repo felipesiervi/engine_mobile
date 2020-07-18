@@ -45,6 +45,8 @@ class _PedidoItemComprar extends State<PedidoItemComprar> {
   }
 
   Future call() async {
+    custo = double.parse(cCusto.text);
+    qtde = int.parse(cQtde.text);
     item.qtdcompra = qtde;
     item.vlcompra = custo;
     await post('compras/post_pedido_atualizar_item', item, goback);
@@ -76,28 +78,48 @@ class _PedidoItemComprar extends State<PedidoItemComprar> {
           ),
           ListTile(
             title: TextFormField(
-                textAlign: TextAlign.center,
-                controller: cCusto,
-                keyboardType: TextInputType.number,
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 24,
-                ),
-              decoration: InputDecoration(labelText: 'Valor Custo'),
+              textAlign: TextAlign.center,
+              controller: cCusto,
+              keyboardType: TextInputType.number,
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: 24,
               ),
+              decoration: InputDecoration(labelText: 'Valor Custo'),
+            ),
           ),
           ListTile(
-            title: Row(
-              children: <Widget>[ 
-                Expanded(flex: 2, child: FlatButton(child: Text('-1,00'), onPressed: () => ajustaCusto(-1))),
-                Expanded(flex: 2, child: FlatButton(child: Text('-0,10'), onPressed: () => ajustaCusto(-0.1))),
-                Expanded(flex: 2, child: FlatButton(child: Text('-0,01'), onPressed: () => ajustaCusto(-0.01))),
-                Expanded(flex: 2, child: FlatButton(child: Text('+0,01'), onPressed: () => ajustaCusto(0.01))),
-                Expanded(flex: 2, child: FlatButton(child: Text('+0,10'), onPressed: () => ajustaCusto(0.1))),
-                Expanded(flex: 2, child: FlatButton(child: Text('+1,00'), onPressed: () => ajustaCusto(1))),
+              title: Row(
+            children: <Widget>[
+              Expanded(
+                  flex: 2,
+                  child: FlatButton(
+                      child: Text('-1,00'), onPressed: () => ajustaCusto(-1))),
+              Expanded(
+                  flex: 2,
+                  child: FlatButton(
+                      child: Text('-0,10'),
+                      onPressed: () => ajustaCusto(-0.1))),
+              Expanded(
+                  flex: 2,
+                  child: FlatButton(
+                      child: Text('-0,01'),
+                      onPressed: () => ajustaCusto(-0.01))),
+              Expanded(
+                  flex: 2,
+                  child: FlatButton(
+                      child: Text('+0,01'),
+                      onPressed: () => ajustaCusto(0.01))),
+              Expanded(
+                  flex: 2,
+                  child: FlatButton(
+                      child: Text('+0,10'), onPressed: () => ajustaCusto(0.1))),
+              Expanded(
+                  flex: 2,
+                  child: FlatButton(
+                      child: Text('+1,00'), onPressed: () => ajustaCusto(1))),
             ],
-            )
-          ),
+          )),
           // Preço final
           ListTile(
             title: TextFormField(
@@ -111,16 +133,27 @@ class _PedidoItemComprar extends State<PedidoItemComprar> {
               decoration: InputDecoration(labelText: 'Quantidade'),
             ),
           ),
-                    ListTile(
-            title: Row(
-              children: <Widget>[ 
-                Expanded(flex: 2, child: FlatButton(child: Text('-10'), onPressed: () => ajustaQtde(-10))),
-                Expanded(flex: 2, child: FlatButton(child: Text('-1'), onPressed: () => ajustaQtde(-1))),
-                Expanded(flex: 2, child: FlatButton(child: Text('+1'), onPressed: () => ajustaQtde(1))),
-                Expanded(flex: 2, child: FlatButton(child: Text('+10'), onPressed: () => ajustaQtde(10))),
+          ListTile(
+              title: Row(
+            children: <Widget>[
+              Expanded(
+                  flex: 2,
+                  child: FlatButton(
+                      child: Text('-10'), onPressed: () => ajustaQtde(-10))),
+              Expanded(
+                  flex: 2,
+                  child: FlatButton(
+                      child: Text('-1'), onPressed: () => ajustaQtde(-1))),
+              Expanded(
+                  flex: 2,
+                  child: FlatButton(
+                      child: Text('+1'), onPressed: () => ajustaQtde(1))),
+              Expanded(
+                  flex: 2,
+                  child: FlatButton(
+                      child: Text('+10'), onPressed: () => ajustaQtde(10))),
             ],
-            )
-          ),
+          )),
 
           ListTile(
             title: Center(
